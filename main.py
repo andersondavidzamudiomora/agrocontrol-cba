@@ -726,9 +726,50 @@ def menu_reportes(datos):
             break
 
 
+# ---------------------------------------------------------------------------
+# Menu principal
+# ---------------------------------------------------------------------------
+
 def main():
-    """Punto de entrada principal de la aplicacion."""
-    print("AgroControl CBA - en construccion")
+    """Punto de entrada principal: carga datos y muestra el menu hasta salir."""
+    datos = cargar_datos()
+    print("==================== AGROCONTROL  CBA  ====================")
+    print("Sistema monolitico de produccion, inventario y ventas")
+
+    while True:
+        print("\n==================== AGROCONTROL  CBA  ====================")
+        print("1. Gestion de productos")
+        print("2. Gestion de lotes productivos")
+        print("3. Movimientos de inventario")
+        print("4. Registrar venta")
+        print("5. Consultar ventas")
+        print("6. Alertas de stock")
+        print("7. Reportes")
+        print("8. Guardar datos")
+        print("0. Salir")
+        opcion = leer_opcion("Seleccione una opcion: ", {"0", "1", "2", "3", "4", "5", "6", "7", "8"})
+
+        if opcion == "1":
+            menu_productos(datos)
+        elif opcion == "2":
+            menu_lotes(datos)
+        elif opcion == "3":
+            menu_inventario(datos)
+        elif opcion == "4":
+            registrar_venta(datos)
+        elif opcion == "5":
+            consultar_ventas(datos)
+        elif opcion == "6":
+            mostrar_alertas(datos)
+        elif opcion == "7":
+            menu_reportes(datos)
+        elif opcion == "8":
+            guardar_datos(datos)
+            print("Datos guardados en la carpeta data/.")
+        else:
+            guardar_datos(datos)
+            print("\nDatos guardados. Hasta pronto!")
+            break
 
 
 if __name__ == "__main__":
