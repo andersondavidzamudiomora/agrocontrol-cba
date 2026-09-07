@@ -33,8 +33,12 @@ def leer_json(ruta):
         return []
     try:
         with open(ruta, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except (json.JSONDecodeError, OSError):
+            datos = json.load(f)
+        # Si el archivo esta corrupto o no contiene una lista, se reinicia vacio
+        if not isinstance(datos, list):
+            return []
+        return datos
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
         return []
 
 
