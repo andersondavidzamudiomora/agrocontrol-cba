@@ -641,6 +641,91 @@ def consultar_ventas(datos):
             print(f"   {item['codigo']} x {item['cantidad']} @ ${item['precio_unitario']:.2f} = ${sub:.2f}")
 
 
+# ---------------------------------------------------------------------------
+# Alertas y reportes (RF12 - RF15)
+# ---------------------------------------------------------------------------
+
+def mostrar_alertas(datos):
+    """RF12: Muestra productos cuyo stock es menor o igual al stock minimo."""
+    print("\n--- Alertas de stock ---")
+    con_alerta = False
+    for p in datos["productos"]:
+        if not p["activo"]:
+            continue
+        stock = calcular_stock(datos, p["codigo"])
+        if stock <= p["stock_minimo"]:
+            con_alerta = True
+            print(f"[ALERTA] {p['codigo']} {p['nombre']}: stock {stock} "
+                  f"<= minimo {p['stock_minimo']}")
+    if not con_alerta:
+        print("No hay productos por debajo del stock minimo.")
+
+
+def reporte_inventario(datos):
+    """RF13: Reporte de existencias y valor del inventario a precio de venta."""
+    print("\n--- Reporte de inventario ---")
+    print(f"{'Codigo':<8} {'Nombre':<25} {'Stock':>10} {'Precio':>10} {'Valor':>12}")
+    print("-" * 70)
+    valor_total = 0.0
+    for p in datos["productos"]:
+        stock = calcular_stock(datos, p["codigo"])
+        valor = stock * p["precio"]
+        valor_total += valor
+        print(f"{p['codigo']:<8} {p['nombre']:<25} {stock:>10} {p['precio']:>10.2f} {valor:>12.2f}")
+    print("-" * 70)
+    print(f"Valor total del inventario (a precio de venta): ${valor_total:.2f}")
+
+
+def reporte_ventas(datos):
+    """RF14: Numero de ventas, unidades vendidas e ingresos acumulados."""
+    print("\n--- Reporte de ventas ---")
+    if not datos["ventas"]:
+        print("No hay ventas registradas.")
+        return
+    numero_ventas = len(datos["ventas"])
+    unidades = sum(item["cantidad"] for v in datos["ventas"] for item in v["items"])
+    ingresos = sum(v["total"] for v in datos["ventas"])
+    print(f"Numero de ventas: {numero_ventas}")
+    print(f"Unidades vendidas: {unidades}")
+    print(f"Ingresos acumulados: ${ingresos:.2f}")
+
+
+def ranking_productos(datos):
+    """RF15: Ranking de los 3 productos con mayor cantidad vendida."""
+    print("\n--- Ranking de productos mas vendidos ---")
+    vendidos = {}
+    for v in datos["ventas"]:
+        for item in v["items"]:
+            vendidos[item["codigo"]] = vendidos.get(item["codigo"], 0) + item["cantidad"]
+    if not vendidos:
+        print("No hay datos de ventas para calcular el ranking.")
+        return
+    top = sorted(vendidos.items(), key=lambda x: x[1], reverse=True)[:3]
+    for i, (codigo, cantidad) in enumerate(top, start=1):
+        producto = obtener_producto(datos, codigo)
+        nombre = producto["nombre"] if producto else "(sin producto)"
+        print(f"{i}. {codigo} {nombre}: {cantidad} unidades")
+
+
+def menu_reportes(datos):
+    """Menu secundario de reportes."""
+    while True:
+        print("\n=== REPORTES ===")
+        print("1. Reporte de inventario")
+        print("2. Reporte de ventas")
+        print("3. Ranking de los 3 productos mas vendidos")
+        print("0. Volver")
+        opcion = leer_opcion("Seleccione una opcion: ", {"0", "1", "2", "3"})
+        if opcion == "1":
+            reporte_inventario(datos)
+        elif opcion == "2":
+            reporte_ventas(datos)
+        elif opcion == "3":
+            ranking_productos(datos)
+        else:
+            break
+
+
 def main():
     """Punto de entrada principal de la aplicacion."""
     print("AgroControl CBA - en construccion")
