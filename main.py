@@ -444,6 +444,110 @@ def menu_lotes(datos):
             break
 
 
+# ---------------------------------------------------------------------------
+# Inventario: movimientos y calculo de stock (RF08 - RF09)
+# ---------------------------------------------------------------------------
+
+def calcular_stock(datos, codigo_producto):
+    """Regla 3: calcula el stock actual a partir de los movimientos de inventario.
+
+    El stock no se guarda como dato aislado: entradas menos salidas.
+    """
+    stock = 0.0
+    for m in datos["movimientos"]:
+        if m["producto_codigo"] == codigo_producto:
+            if m["tipo"] == "ENTRADA":
+                stock += m["cantidad"]
+            elif m["tipo"] == "SALIDA":
+                stock -= m["cantidad"]
+    return stock
+
+
+def validar_producto_para_operacion(datos, codigo):
+    """Verifica que el producto exista y este activo. Devuelve el producto o None."""
+    producto = obtener_producto(datos, codigo)
+    if not producto:
+        print(f"Error: no existe el producto {codigo}.")
+        return None
+    if not producto["activo"]:
+        print(f"Error: el producto {codigo} esta desactivado y no puede operarse.")
+        return None
+    return producto
+
+
+def entrada_manual(datos):
+    """RF08: Entrada manual de inventario con motivo obligatorio."""
+    print("\n--- Entrada manual de inventario ---")
+    codigo = leer_texto("Codigo del producto: ", obligatorio=True).upper()
+    if not validar_producto_para_operacion(datos, codigo):
+        return
+    cantidad = leer_numero("Cantidad: ", tipo=float, minimo=0.0001)
+    motivo = leer_texto("Motivo (obligatorio): ", obligatorio=True)
+    registrar_movimiento(datos, codigo, "ENTRADA", cantidad, motivo)
+    print(f"Entrada registrada. Stock actual de {codigo}: {calcular_stock(datos, codigo)}")
+
+
+def salida_manual(datos):
+    """RF09: Salida manual solo si existe stock suficiente."""
+    print("\n--- Salida manual de inventario ---")
+    codigo = leer_texto("Codigo del producto: ", obligatorio=True).upper()
+    if not validar_producto_para_operacion(datos, codigo):
+        return
+    stock = calcular_stock(datos, codigo)
+    print(f"Stock disponible de {codigo}: {stock}")
+    cantidad = leer_numero("Cantidad a sacar: ", tipo=float, minimo=0.0001)
+    if cantidad > stock:
+        print(f"Error: stock insuficiente. Disponible: {stock}, solicitado: {cantidad}. "
+              "La salida no se registro.")
+        return
+    motivo = leer_texto("Motivo (obligatorio): ", obligatorio=True)
+    registrar_movimiento(datos, codigo, "SALIDA", cantidad, motivo)
+    print(f"Salida registrada. Stock actual de {codigo}: {calcular_stock(datos, codigo)}")
+
+
+def listar_movimientos(datos):
+    """Lista los movimientos de inventario, opcionalmente filtrados por producto."""
+    codigo = leer_texto("Codigo del producto (vacío para todos): ").upper()
+    movimientos = datos["movimientos"]
+    if codigo:
+        movimientos = [m for m in movimientos if m["producto_codigo"] == codigo]
+    if not movimientos:
+        print("\nNo hay movimientos para mostrar.")
+        return
+    print("\n--- Movimientos de inventario ---")
+    print(f"{'Id':<8} {'Producto':<10} {'Tipo':<10} {'Cantidad':>10} {'Motivo':<30} Fecha")
+    print("-" * 95)
+    for m in movimientos:
+        print(f"{m['id']:<8} {m['producto_codigo']:<10} {m['tipo']:<10} "
+              f"{m['cantidad']:>10} {m['motivo']:<30} {m['fecha']}")
+
+
+def menu_inventario(datos):
+    """Menu secundario de movimientos de inventario."""
+    while True:
+        print("\n=== MOVIMIENTOS DE INVENTARIO ===")
+        print("1. Entrada manual")
+        print("2. Salida manual")
+        print("3. Listar movimientos")
+        print("4. Consultar stock de un producto")
+        print("0. Volver")
+        opcion = leer_opcion("Seleccione una opcion: ", {"0", "1", "2", "3", "4"})
+        if opcion == "1":
+            entrada_manual(datos)
+        elif opcion == "2":
+            salida_manual(datos)
+        elif opcion == "3":
+            listar_movimientos(datos)
+        elif opcion == "4":
+            codigo = leer_texto("Codigo del producto: ", obligatorio=True).upper()
+            if obtener_producto(datos, codigo):
+                print(f"Stock de {codigo}: {calcular_stock(datos, codigo)}")
+            else:
+                print(f"Error: no existe el producto {codigo}.")
+        else:
+            break
+
+
 def main():
     """Punto de entrada principal de la aplicacion."""
     print("AgroControl CBA - en construccion")
