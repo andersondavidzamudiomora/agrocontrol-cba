@@ -1,0 +1,19 @@
+# Entorno virtual de Python
+venv/
+.venv/
+
+# Archivos compilados de Python
+__pycache__/
+*.pyc
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Datos locales generados por la aplicacion (se conservan como evidencia,
+# pero se ignoran en caso de querer regenerarlos desde cero)
+# data/*.json
