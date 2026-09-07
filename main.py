@@ -548,6 +548,99 @@ def menu_inventario(datos):
             break
 
 
+# ---------------------------------------------------------------------------
+# Ventas (RF10 - RF11)
+# ---------------------------------------------------------------------------
+
+def registrar_venta(datos):
+    """RF10/RF11: Registra una venta con uno o varios productos.
+
+    Valida primero TODOS los items y el stock de cada uno; solo si la
+    venta completa es valida se descuenta inventario y se guarda.
+    El precio se toma del precio vigente del producto (regla 7).
+    """
+    print("\n--- Registrar venta ---")
+    print("Ingrese los productos de la venta. Codigo vacio para terminar.")
+
+    items = []
+    while True:
+        codigo = leer_texto("Codigo del producto (vacio para terminar): ").upper()
+        if not codigo:
+            if not items:
+                print("Error: la venta debe contener al menos un item valido (regla 6).")
+                continue
+            break
+        producto = validar_producto_para_operacion(datos, codigo)
+        if not producto:
+            continue
+        cantidad = leer_numero("Cantidad: ", tipo=float, minimo=0.0001)
+        items.append({"codigo": codigo, "cantidad": cantidad, "precio_unitario": producto["precio"]})
+        print(f"Item agregado: {producto['nombre']} x {cantidad} @ ${producto['precio']:.2f}")
+
+    # Verificar stock de TODOS los items antes de registrar cualquier cosa
+    necesidades = {}
+    for item in items:
+        necesidades[item["codigo"]] = necesidades.get(item["codigo"], 0) + item["cantidad"]
+    for codigo, cantidad in necesidades.items():
+        stock = calcular_stock(datos, codigo)
+        if cantidad > stock:
+            print(f"Error: stock insuficiente de {codigo}. Disponible: {stock}, solicitado: {cantidad}.")
+            print("La venta NO se registro y el inventario no se modifico.")
+            return
+
+    subtotales = [item["cantidad"] * item["precio_unitario"] for item in items]
+    total = round(sum(subtotales), 2)
+    venta = {
+        "id": generar_id("V", datos["ventas"]),
+        "fecha": fecha_actual(),
+        "items": [
+            {"codigo": it["codigo"], "cantidad": it["cantidad"], "precio_unitario": it["precio_unitario"]}
+            for it in items
+        ],
+        "total": total,
+    }
+    datos["ventas"].append(venta)
+
+    # Descontar inventario: una salida por item
+    for item in items:
+        registrar_movimiento(
+            datos,
+            item["codigo"],
+            "SALIDA",
+            item["cantidad"],
+            f"Venta {venta['id']}",
+        )
+    guardar_datos(datos)
+    print(f"\nVenta {venta['id']} registrada. Total: ${total:.2f}")
+    for item, sub in zip(items, subtotales):
+        print(f"  - {item['codigo']} x {item['cantidad']} = ${sub:.2f}")
+
+
+def consultar_ventas(datos):
+    """Muestra las ventas registradas, opcionalmente filtradas por rango de fechas."""
+    ventas = datos["ventas"]
+    if not ventas:
+        print("\nNo hay ventas registradas.")
+        return
+
+    print("\n--- Consultar ventas ---")
+    desde = leer_texto("Fecha desde (YYYY-MM-DD, vacio para todas): ")
+    hasta = leer_texto("Fecha hasta (YYYY-MM-DD, vacio para todas): ")
+    if desde:
+        ventas = [v for v in ventas if v["fecha"][:10] >= desde]
+    if hasta:
+        ventas = [v for v in ventas if v["fecha"][:10] <= hasta]
+    if not ventas:
+        print("No hay ventas en ese rango de fechas.")
+        return
+
+    for v in ventas:
+        print(f"\nVenta {v['id']} - {v['fecha']} - Total: ${v['total']:.2f}")
+        for item in v["items"]:
+            sub = item["cantidad"] * item["precio_unitario"]
+            print(f"   {item['codigo']} x {item['cantidad']} @ ${item['precio_unitario']:.2f} = ${sub:.2f}")
+
+
 def main():
     """Punto de entrada principal de la aplicacion."""
     print("AgroControl CBA - en construccion")

@@ -22,5 +22,13 @@
         "cantidad": 15.0,
         "motivo": "Compra a proveedor",
         "fecha": "2026-09-07 14:54"
+    },
+    {
+        "id": "M0004",
+        "producto_codigo": "P001",
+        "tipo": "SALIDA",
+        "cantidad": 5.0,
+        "motivo": "Venta V0001",
+        "fecha": "2026-09-07 14:54"
     }
 ]
