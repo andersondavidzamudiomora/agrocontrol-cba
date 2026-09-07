@@ -287,6 +287,163 @@ def menu_productos(datos):
             break
 
 
+# ---------------------------------------------------------------------------
+# Lotes productivos (RF05 - RF07)
+# ---------------------------------------------------------------------------
+
+ESTADOS_LOTE = ("EN_PRODUCCION", "COSECHADO", "CANCELADO")
+
+
+def obtener_lote(datos, id_lote):
+    """Devuelve el lote con el id dado, o None si no existe."""
+    for lote in datos["lotes"]:
+        if lote["id_lote"] == id_lote:
+            return lote
+    return None
+
+
+def registrar_movimiento(datos, producto_codigo, tipo, cantidad, motivo):
+    """Crea y guarda un movimiento de inventario (ENTRADA o SALIDA)."""
+    movimiento = {
+        "id": generar_id("M", datos["movimientos"]),
+        "producto_codigo": producto_codigo,
+        "tipo": tipo,
+        "cantidad": cantidad,
+        "motivo": motivo,
+        "fecha": fecha_actual(),
+    }
+    datos["movimientos"].append(movimiento)
+    guardar_datos(datos)
+    return movimiento
+
+
+def registrar_lote(datos):
+    """RF05: Registra un lote asociado unicamente a un producto existente y activo."""
+    print("\n--- Registrar lote productivo ---")
+    codigo_producto = leer_texto("Codigo del producto: ", obligatorio=True).upper()
+    producto = obtener_producto(datos, codigo_producto)
+    if not producto:
+        print(f"Error: no existe el producto {codigo_producto}.")
+        return
+    if not producto["activo"]:
+        print(f"Error: el producto {codigo_producto} esta desactivado y no puede usarse en nuevos lotes.")
+        return
+
+    id_lote = leer_texto("Id del lote (ej. L001): ", obligatorio=True).upper()
+    if obtener_lote(datos, id_lote):
+        print(f"Error: ya existe un lote con el id {id_lote}.")
+        return
+
+    fecha_siembra = leer_texto("Fecha de siembra (YYYY-MM-DD): ", obligatorio=True)
+    area_m2 = leer_numero("Area (m2): ", tipo=float, minimo=0.0001)
+
+    lote = {
+        "id_lote": id_lote,
+        "producto_codigo": codigo_producto,
+        "fecha_siembra": fecha_siembra,
+        "area_m2": area_m2,
+        "cantidad_producida": 0,
+        "estado": "EN_PRODUCCION",
+    }
+    datos["lotes"].append(lote)
+    guardar_datos(datos)
+    print(f"Lote {id_lote} registrado correctamente.")
+
+
+def listar_lotes(datos):
+    """Lista todos los lotes registrados."""
+    if not datos["lotes"]:
+        print("\nNo hay lotes registrados.")
+        return
+    print("\n--- Lista de lotes ---")
+    print(f"{'Lote':<8} {'Producto':<10} {'Siembra':<12} {'Area m2':>10} {'Producido':>12} {'Estado'}")
+    print("-" * 70)
+    for l in datos["lotes"]:
+        print(f"{l['id_lote']:<8} {l['producto_codigo']:<10} {l['fecha_siembra']:<12} "
+              f"{l['area_m2']:>10.2f} {l['cantidad_producida']:>12} {l['estado']}")
+
+
+def cosechar_lote(datos):
+    """RF07: Cosecha un lote, registra la cantidad producida y genera una entrada automatica.
+
+    Regla 5: un lote solo puede cosecharse una vez.
+    """
+    print("\n--- Cosechar lote ---")
+    id_lote = leer_texto("Id del lote: ", obligatorio=True).upper()
+    lote = obtener_lote(datos, id_lote)
+    if not lote:
+        print(f"Error: no existe el lote {id_lote}.")
+        return
+    if lote["estado"] != "EN_PRODUCCION":
+        print(f"Error: el lote {id_lote} ya no esta en produccion (estado: {lote['estado']}). "
+              "Solo puede cosecharse una vez.")
+        return
+
+    cantidad = leer_numero("Cantidad producida: ", tipo=float, minimo=0.0001)
+    lote["cantidad_producida"] = cantidad
+    lote["estado"] = "COSECHADO"
+
+    # Entrada automatica de inventario por la cosecha
+    registrar_movimiento(
+        datos,
+        lote["producto_codigo"],
+        "ENTRADA",
+        cantidad,
+        f"Cosecha lote {id_lote}",
+    )
+    guardar_datos(datos)
+    print(f"Lote {id_lote} cosechado: {cantidad} unidades entraron al inventario.")
+
+
+def cambiar_estado_lote(datos):
+    """RF06: Cambia el estado de un lote entre EN_PRODUCCION, COSECHADO y CANCELADO."""
+    print("\n--- Cambiar estado de lote ---")
+    id_lote = leer_texto("Id del lote: ", obligatorio=True).upper()
+    lote = obtener_lote(datos, id_lote)
+    if not lote:
+        print(f"Error: no existe el lote {id_lote}.")
+        return
+
+    print(f"Lote {id_lote} - estado actual: {lote['estado']}")
+    print("Estados disponibles: " + ", ".join(ESTADOS_LOTE))
+    nuevo_estado = leer_texto("Nuevo estado: ", obligatorio=True).upper()
+    if nuevo_estado not in ESTADOS_LOTE:
+        print(f"Error: {nuevo_estado} no es un estado valido.")
+        return
+    if nuevo_estado == lote["estado"]:
+        print("El lote ya se encuentra en ese estado.")
+        return
+    if lote["estado"] == "COSECHADO" and nuevo_estado != "COSECHADO":
+        print("Error: un lote cosechado no puede volver a cambiar de estado.")
+        return
+
+    lote["estado"] = nuevo_estado
+    guardar_datos(datos)
+    print(f"Lote {id_lote} cambio a estado {nuevo_estado}.")
+
+
+def menu_lotes(datos):
+    """Menu secundario de gestion de lotes productivos."""
+    while True:
+        print("\n=== GESTION DE LOTES PRODUCTIVOS ===")
+        print("1. Registrar lote")
+        print("2. Listar lotes")
+        print("3. Cosechar lote")
+        print("4. Cambiar estado de lote")
+        print("0. Volver")
+        opcion = leer_opcion("Seleccione una opcion: ", {"0", "1", "2", "3", "4"})
+        if opcion == "1":
+            registrar_lote(datos)
+        elif opcion == "2":
+            listar_lotes(datos)
+        elif opcion == "3":
+            cosechar_lote(datos)
+        elif opcion == "4":
+            cambiar_estado_lote(datos)
+        else:
+            break
+
+
 def main():
     """Punto de entrada principal de la aplicacion."""
     print("AgroControl CBA - en construccion")
