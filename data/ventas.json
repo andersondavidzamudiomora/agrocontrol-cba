@@ -1,14 +1,36 @@
 [
     {
         "id": "V0001",
-        "fecha": "2026-09-07 14:54",
+        "fecha": "2026-09-07 14:58",
         "items": [
             {
                 "codigo": "P001",
                 "cantidad": 5.0,
                 "precio_unitario": 3500.0
+            },
+            {
+                "codigo": "P002",
+                "cantidad": 3.0,
+                "precio_unitario": 2500.0
             }
         ],
-        "total": 17500.0
+        "total": 25000.0
+    },
+    {
+        "id": "V0002",
+        "fecha": "2026-09-07 14:58",
+        "items": [
+            {
+                "codigo": "P003",
+                "cantidad": 4.0,
+                "precio_unitario": 2000.0
+            },
+            {
+                "codigo": "P001",
+                "cantidad": 2.0,
+                "precio_unitario": 3500.0
+            }
+        ],
+        "total": 15000.0
     }
 ]

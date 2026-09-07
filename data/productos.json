@@ -7,5 +7,23 @@
         "precio": 3500.0,
         "stock_minimo": 10.0,
         "activo": true
+    },
+    {
+        "codigo": "P002",
+        "nombre": "Tomate chonto",
+        "categoria": "Hortalizas",
+        "unidad": "unidad",
+        "precio": 2500.0,
+        "stock_minimo": 20.0,
+        "activo": true
+    },
+    {
+        "codigo": "P003",
+        "nombre": "Zanahoria",
+        "categoria": "Hortalizas",
+        "unidad": "kg",
+        "precio": 2000.0,
+        "stock_minimo": 15.0,
+        "activo": true
     }
 ]
