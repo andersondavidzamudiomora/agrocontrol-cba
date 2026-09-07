@@ -17,3 +17,7 @@ Thumbs.db
 # Datos locales generados por la aplicacion (se conservan como evidencia,
 # pero se ignoran en caso de querer regenerarlos desde cero)
 # data/*.json
+
+# Copias de seguridad automaticas y exportaciones
+data/backups/
+data/inventario.csv

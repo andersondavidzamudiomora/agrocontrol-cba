@@ -62,8 +62,18 @@ def cargar_datos():
 
 
 def guardar_datos(datos):
-    """Guarda inmediatamente todos los datos en sus archivos JSON."""
+    """Guarda inmediatamente todos los datos en sus archivos JSON.
+
+    Reto: antes de sobrescribir, copia los archivos existentes a
+    data/backups/ con marca de tiempo.
+    """
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    backup_dir = DATA_DIR / "backups"
+    backup_dir.mkdir(exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     for clave, ruta in ARCHIVOS.items():
+        if ruta.exists():
+            shutil.copy2(ruta, backup_dir / f"{timestamp}_{clave}.json")
         escribir_json(ruta, datos[clave])
 
 
