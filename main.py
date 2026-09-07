@@ -4,8 +4,10 @@ Aplicacion de consola con persistencia local en archivos JSON.
 Solo utiliza modulos de la biblioteca estandar de Python.
 """
 
+import csv
 import json
 import os
+import shutil
 from datetime import datetime
 from pathlib import Path
 
@@ -711,6 +713,19 @@ def ranking_productos(datos):
         print(f"{i}. {codigo} {nombre}: {cantidad} unidades")
 
 
+def exportar_inventario_csv(datos):
+    """Reto: exporta el reporte de inventario a un archivo CSV (biblioteca csv)."""
+    ruta_csv = DATA_DIR / "inventario.csv"
+    with open(ruta_csv, "w", encoding="utf-8", newline="") as f:
+        escritor = csv.writer(f)
+        escritor.writerow(["codigo", "nombre", "stock", "precio", "valor"])
+        for p in datos["productos"]:
+            stock = calcular_stock(datos, p["codigo"])
+            escritor.writerow([p["codigo"], p["nombre"], stock, p["precio"],
+                               round(stock * p["precio"], 2)])
+    print(f"Reporte de inventario exportado a {ruta_csv}")
+
+
 def menu_reportes(datos):
     """Menu secundario de reportes."""
     while True:
@@ -718,14 +733,17 @@ def menu_reportes(datos):
         print("1. Reporte de inventario")
         print("2. Reporte de ventas")
         print("3. Ranking de los 3 productos mas vendidos")
+        print("4. Exportar inventario a CSV")
         print("0. Volver")
-        opcion = leer_opcion("Seleccione una opcion: ", {"0", "1", "2", "3"})
+        opcion = leer_opcion("Seleccione una opcion: ", {"0", "1", "2", "3", "4"})
         if opcion == "1":
             reporte_inventario(datos)
         elif opcion == "2":
             reporte_ventas(datos)
         elif opcion == "3":
             ranking_productos(datos)
+        elif opcion == "4":
+            exportar_inventario_csv(datos)
         else:
             break
 
