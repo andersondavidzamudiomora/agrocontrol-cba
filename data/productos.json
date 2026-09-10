@@ -10,12 +10,12 @@
     },
     {
         "codigo": "P002",
-        "nombre": "Tomate chonto",
+        "nombre": "TOMATE",
         "categoria": "Hortalizas",
-        "unidad": "unidad",
+        "unidad": "75",
         "precio": 2500.0,
-        "stock_minimo": 20.0,
-        "activo": true
+        "stock_minimo": 54.0,
+        "activo": false
     },
     {
         "codigo": "P003",
@@ -24,6 +24,51 @@
         "unidad": "kg",
         "precio": 2000.0,
         "stock_minimo": 15.0,
+        "activo": true
+    },
+    {
+        "codigo": "P004",
+        "nombre": "Cebolla",
+        "categoria": "Hortalizas",
+        "unidad": "15 libras",
+        "precio": 3500.0,
+        "stock_minimo": 21.0,
+        "activo": false
+    },
+    {
+        "codigo": "P005",
+        "nombre": "REMOLACHAS",
+        "categoria": "Hortalizas",
+        "unidad": "41",
+        "precio": 2000.0,
+        "stock_minimo": 53.0,
+        "activo": true
+    },
+    {
+        "codigo": "P006",
+        "nombre": "papa",
+        "categoria": "fruta",
+        "unidad": "31 lobras",
+        "precio": 9.0,
+        "stock_minimo": 0.0,
+        "activo": true
+    },
+    {
+        "codigo": "P009",
+        "nombre": "zanaoria",
+        "categoria": "Hortalizas",
+        "unidad": "54",
+        "precio": 2000.0,
+        "stock_minimo": 21.0,
+        "activo": true
+    },
+    {
+        "codigo": "P008",
+        "nombre": "papa",
+        "categoria": "Tuberculo",
+        "unidad": "32",
+        "precio": 2000.0,
+        "stock_minimo": 12.0,
         "activo": true
     }
 ]
