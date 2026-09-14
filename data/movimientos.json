@@ -3,64 +3,32 @@
         "id": "M0001",
         "producto_codigo": "P001",
         "tipo": "ENTRADA",
-        "cantidad": 50.0,
+        "cantidad": 32,
         "motivo": "Cosecha lote L001",
-        "fecha": "2026-09-07 14:58"
+        "fecha": "2026-09-14 14:48"
     },
     {
         "id": "M0002",
-        "producto_codigo": "P002",
+        "producto_codigo": "P003",
         "tipo": "ENTRADA",
-        "cantidad": 80.0,
-        "motivo": "Cosecha lote L002",
-        "fecha": "2026-09-07 14:58"
+        "cantidad": 21.0,
+        "motivo": "dañados",
+        "fecha": "2026-09-14 14:59"
     },
     {
         "id": "M0003",
-        "producto_codigo": "P003",
-        "tipo": "ENTRADA",
-        "cantidad": 20.0,
-        "motivo": "Compra a proveedor",
-        "fecha": "2026-09-07 14:58"
+        "producto_codigo": "P001",
+        "tipo": "SALIDA",
+        "cantidad": 21.0,
+        "motivo": "dañados",
+        "fecha": "2026-09-14 15:01"
     },
     {
         "id": "M0004",
         "producto_codigo": "P003",
-        "tipo": "SALIDA",
-        "cantidad": 8.0,
-        "motivo": "Merma por humedad",
-        "fecha": "2026-09-07 14:58"
-    },
-    {
-        "id": "M0005",
-        "producto_codigo": "P001",
-        "tipo": "SALIDA",
-        "cantidad": 5.0,
-        "motivo": "Venta V0001",
-        "fecha": "2026-09-07 14:58"
-    },
-    {
-        "id": "M0006",
-        "producto_codigo": "P002",
-        "tipo": "SALIDA",
-        "cantidad": 3.0,
-        "motivo": "Venta V0001",
-        "fecha": "2026-09-07 14:58"
-    },
-    {
-        "id": "M0007",
-        "producto_codigo": "P003",
-        "tipo": "SALIDA",
-        "cantidad": 4.0,
-        "motivo": "Venta V0002",
-        "fecha": "2026-09-07 14:58"
-    },
-    {
-        "id": "M0008",
-        "producto_codigo": "P001",
-        "tipo": "SALIDA",
-        "cantidad": 2.0,
-        "motivo": "Venta V0002",
-        "fecha": "2026-09-07 14:58"
+        "tipo": "ENTRADA",
+        "cantidad": 67,
+        "motivo": "Cosecha lote L002",
+        "fecha": "2026-09-14 15:52"
     }
 ]
