@@ -1,102 +1,80 @@
-# AgroControl CBA
+ # AgroControl CBA
 
-Sistema monolitico para gestion de produccion, inventario y ventas de una unidad
-productiva asociada al Centro de Biotecnologia Agropecuaria (CBA).
+Sistema monolitico en Python para administrar productos agricolas, lotes
+productivos, inventario y ventas. La aplicacion utiliza archivos JSON como
+almacenamiento local y concentra la logica principal en `main.py`.
 
-Aplicacion de consola escrita en Python que centraliza productos, lotes
-productivos, movimientos de inventario y ventas, con persistencia local en
-archivos JSON. Solo utiliza la biblioteca estandar de Python (`json`, `os`,
-`datetime`, `pathlib`); no usa bases de datos ni frameworks web.
+## Ejecucion
 
-## Descripcion
+Requisitos: Python 3.10 o superior. No se necesitan dependencias externas.
 
-La unidad productiva registraba productos, lotes, existencias y ventas en hojas
-independientes, lo que generaba inconsistencias (ventas superiores al
-inventario, lotes sin trazabilidad, sin alertas de stock bajo ni reportes).
-AgroControl CBA resuelve ese problema en un unico proyecto monolitico con un
-unico punto de entrada (`main.py`).
+Desde esta carpeta ejecutar:
 
-## Requisitos
-
-- Python 3.10 o superior
-- Git (para el flujo de versionado)
-
-## Instrucciones de ejecucion
-
-```bash
-# Desde la carpeta del proyecto
+```text
 python main.py
 ```
 
-Al iniciar, la aplicacion carga automaticamente los archivos JSON de la carpeta
-`data/`. Si un archivo no existe, inicia con una coleccion vacia y lo crea al
-primer guardado.
+La aplicacion crea la carpeta `data/` y sus archivos JSON si no existen.
 
-## Estructura del proyecto
+## Estructura
 
-```
+```text
 agrocontrol_cba/
- main.py               Toda la logica de la aplicacion
- data/
-  productos.json       Productos comercializables
-  lotes.json           Lotes productivos
-  movimientos.json     Entradas y salidas de inventario
-  ventas.json          Ventas registradas
- README.md
- .gitignore
+|-- main.py
+|-- README.md
+|-- RESPUESTAS_REFLEXION.md
+|-- data/
+	|-- productos.json
+	|-- lotes.json
+	|-- movimientos.json
+	|-- ventas.json
+	|-- backups/
 ```
 
-## Menu principal
+## Funcionalidades
 
-```
-==================== AGROCONTROL  CBA  ====================
-1. Gestion de productos
-2. Gestion de lotes productivos
-3. Movimientos de inventario
-4. Registrar venta
-5. Consultar ventas
-6. Alertas de stock
-7. Reportes
-8. Guardar datos
-0. Salir
-```
+- Registrar, listar, buscar, actualizar, desactivar y reactivar productos.
+- Registrar lotes, cambiar estados y cosechar lotes.
+- Registrar entradas y salidas de inventario.
+- Calcular el stock a partir de los movimientos.
+- Registrar ventas con uno o varios productos.
+- Consultar ventas por rango de fechas.
+- Mostrar alertas, existencias, valor del inventario y ranking de ventas.
+- Exportar el inventario a CSV.
+- Crear copias de seguridad antes de guardar cambios.
+- Calcular utilidad estimada con costo unitario por producto.
+- Registrar devoluciones y reponer el inventario mediante entradas inversas.
+- Autenticar usuarios con roles OPERADOR y ADMINISTRADOR.
 
-## Reglas de negocio principales
+## Reglas principales
 
-1. Los codigos de producto y de lote son unicos y se almacenan en mayuscula.
-2. Un producto desactivado conserva su historial, pero no puede usarse en
-   nuevos lotes ni ventas.
-3. El stock actual no se guarda como dato aislado: se calcula a partir de los
-   movimientos de inventario (entradas menos salidas).
-4. Una salida de inventario y una venta nunca pueden dejar el stock en valores
-   negativos.
-5. Un lote solo puede cosecharse una vez. Al cosecharse cambia su estado y
-   genera una entrada automatica de inventario.
-6. Una venta debe contener al menos un item valido.
-7. El precio de la venta se toma del precio vigente del producto en el momento
-   del registro y se guarda dentro del detalle de la venta.
-8. Las operaciones que modifican datos guardan inmediatamente la informacion
-   en JSON.
-9. El sistema genera identificadores secuenciales para movimientos y ventas
-   (M0001, V0001, ...).
+- Los codigos de productos y lotes son unicos y se guardan en mayuscula.
+- Los productos desactivados conservan su historial, pero no se pueden operar.
+- El stock se calcula como entradas menos salidas.
+- No se permiten salidas ni ventas por encima del stock disponible.
+- Un lote solo puede cosecharse una vez.
+- Una cosecha genera automaticamente una entrada de inventario.
+- Cada venta conserva el precio vigente de cada producto al registrarse.
+- Las operaciones modifican inmediatamente los archivos JSON.
+- El OPERADOR puede consultar y operar inventario y ventas.
+- El ADMINISTRADOR puede gestionar productos, lotes, reportes y devoluciones.
 
-## Casos de prueba minimos
+## Usuarios de prueba
 
-| Codigo | Caso | Resultado esperado |
-|--------|------|--------------------|
-| PF001  | Producto duplicado | Se rechaza el segundo registro |
-| PF002  | Precio invalido (0 o texto) | Se solicita un valor valido |
-| PF003  | Cosechar lote inexistente | Informa que no existe |
-| PF004  | Doble cosecha del mismo lote | Se rechaza la segunda |
-| PF005  | Salida mayor al stock | Se impide la operacion |
-| PF006  | Venta valida | Crea venta y reduce stock |
-| PF007  | Venta con varios productos | Calcula subtotales y total |
-| PF008  | Persistencia | Los datos se conservan al reiniciar |
-| PF009  | Stock menor o igual al minimo | Aparece en alertas |
+| Usuario | Clave | Rol |
+|---|---|---|
+| operador | operador123 | OPERADOR |
+| admin | admin123 | ADMINISTRADOR |
 
-## Autores
+El reporte de utilidad se encuentra en `7. Reportes`, opcion `6`.
+Las devoluciones se realizan desde la opcion `9. Devolver venta` del menu
+principal y solo pueden hacerse una vez por venta.
 
-- Ander
+## Datos y respaldos
 
----
-Centro de Biotecnologia Agropecuaria - Mosquera, Cundinamarca - Material de formacion SENA.
+Los archivos JSON se encuentran en `data/`. Antes de cada guardado, los
+archivos existentes se copian en `data/backups/` con fecha y hora.
+
+## Autor
+
+Ander - proyecto academico AgroControl CBA.

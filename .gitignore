@@ -21,3 +21,7 @@ Thumbs.db
 # Copias de seguridad automaticas y exportaciones
 data/backups/
 data/inventario.csv
+
+# Archivos temporales generados durante las pruebas
+.freebuff/
+o

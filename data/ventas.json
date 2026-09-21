@@ -1,1 +1,172 @@
-[]
+[
+    {
+        "id": "V0001",
+        "fecha": "2026-09-17 16:18",
+        "items": [
+            {
+                "codigo": "P001",
+                "cantidad": 122.0,
+                "precio_unitario": 2000.0
+            }
+        ],
+        "total": 244000.0
+    },
+    {
+        "id": "V0002",
+        "fecha": "2026-09-17 16:21",
+        "items": [
+            {
+                "codigo": "P001",
+                "cantidad": 122,
+                "precio_unitario": 2000.0
+            }
+        ],
+        "total": 244000.0
+    },
+    {
+        "id": "V0003",
+        "fecha": "2026-09-17 16:22",
+        "items": [
+            {
+                "codigo": "P001",
+                "cantidad": 12,
+                "precio_unitario": 2000.0
+            }
+        ],
+        "total": 24000.0
+    },
+    {
+        "id": "V0004",
+        "fecha": "2026-09-17 16:29",
+        "items": [
+            {
+                "codigo": "P003",
+                "cantidad": 12,
+                "precio_unitario": 1000.0
+            }
+        ],
+        "total": 12000.0
+    },
+    {
+        "id": "V0005",
+        "fecha": "2026-09-17 16:34",
+        "items": [
+            {
+                "codigo": "P002",
+                "cantidad": 21,
+                "precio_unitario": 2000.0
+            }
+        ],
+        "total": 42000.0
+    },
+    {
+        "id": "V0006",
+        "fecha": "2026-09-21 09:15",
+        "items": [
+            {
+                "codigo": "P004",
+                "cantidad": 8,
+                "precio_unitario": 2500.0
+            },
+            {
+                "codigo": "P009",
+                "cantidad": 15,
+                "precio_unitario": 1800.0
+            }
+        ],
+        "total": 20000.0
+    },
+    {
+        "id": "V0007",
+        "fecha": "2026-09-21 11:42",
+        "items": [
+            {
+                "codigo": "P003",
+                "cantidad": 10,
+                "precio_unitario": 1000.0
+            },
+            {
+                "codigo": "P010",
+                "cantidad": 5,
+                "precio_unitario": 2200.0
+            }
+        ],
+        "total": 21000.0
+    },
+    {
+        "id": "V0008",
+        "fecha": "2026-09-21 15:05",
+        "items": [
+            {
+                "codigo": "P011",
+                "cantidad": 3,
+                "precio_unitario": 3000.0
+            },
+            {
+                "codigo": "P012",
+                "cantidad": 12,
+                "precio_unitario": 1500.0
+            }
+        ],
+        "total": 22500.0
+    },
+    {
+        "id": "V0009",
+        "fecha": "2026-09-21 17:12",
+        "items": [
+            {
+                "codigo": "P001",
+                "cantidad": 3,
+                "precio_unitario": 2000.0
+            }
+        ],
+        "total": 6000.0
+    },
+    {
+        "id": "V0010",
+        "fecha": "2026-09-21 17:14",
+        "items": [
+            {
+                "codigo": "P001",
+                "cantidad": 3,
+                "precio_unitario": 2000.0
+            },
+            {
+                "codigo": "P002",
+                "cantidad": 2,
+                "precio_unitario": 2000.0
+            }
+        ],
+        "total": 10000.0,
+        "devuelta": true
+    },
+    {
+        "id": "V0011",
+        "fecha": "2026-09-21 17:21",
+        "items": [
+            {
+                "codigo": "P001",
+                "cantidad": 2,
+                "precio_unitario": 2000.0
+            },
+            {
+                "codigo": "P002",
+                "cantidad": 2,
+                "precio_unitario": 2000.0
+            }
+        ],
+        "total": 8000.0
+    },
+    {
+        "id": "V0012",
+        "fecha": "2026-09-21 17:27",
+        "items": [
+            {
+                "codigo": "P001",
+                "cantidad": 3,
+                "precio_unitario": 2000.0
+            }
+        ],
+        "total": 6000.0
+    }
+]

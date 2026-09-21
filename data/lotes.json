@@ -2,33 +2,73 @@
     {
         "id_lote": "L001",
         "producto_codigo": "P001",
-        "fecha_siembra": "28-04-2026",
-        "area_m2": 32,
-        "cantidad_producida": 32,
+        "fecha_siembra": "17-09-2026",
+        "area_m2": 87,
+        "cantidad_producida": 435,
         "estado": "COSECHADO"
     },
     {
         "id_lote": "L002",
+        "producto_codigo": "P002",
+        "fecha_siembra": "29-09-2026",
+        "area_m2": 98,
+        "cantidad_producida": 221,
+        "estado": "COSECHADO"
+    },
+    {
+        "id_lote": "L003",
         "producto_codigo": "P003",
-        "fecha_siembra": "12-06-2026",
-        "area_m2": 32,
-        "cantidad_producida": 67,
+        "fecha_siembra": "21-09-2026",
+        "area_m2": 75,
+        "cantidad_producida": 32,
         "estado": "COSECHADO"
     },
     {
         "id_lote": "L004",
-        "producto_codigo": "P008",
-        "fecha_siembra": "31-03-2026",
+        "producto_codigo": "P002",
+        "fecha_siembra": "12-09-2026",
+        "area_m2": 423,
+        "cantidad_producida": 332,
+        "estado": "COSECHADO"
+    },
+    {
+        "id_lote": "L005",
+        "producto_codigo": "P004",
+        "fecha_siembra": "12-09-2026",
         "area_m2": 54,
-        "cantidad_producida": 0,
-        "estado": "CANCELADO"
+        "cantidad_producida": 20,
+        "estado": "COSECHADO"
     },
     {
         "id_lote": "L006",
         "producto_codigo": "P009",
-        "fecha_siembra": "21-10-2026",
-        "area_m2": 312,
-        "cantidad_producida": 0,
-        "estado": "EN_PRODUCCION"
+        "fecha_siembra": "15-09-2026",
+        "area_m2": 64,
+        "cantidad_producida": 180,
+        "estado": "COSECHADO"
+    },
+    {
+        "id_lote": "L007",
+        "producto_codigo": "P010",
+        "fecha_siembra": "20-09-2026",
+        "area_m2": 72,
+        "cantidad_producida": 210,
+        "estado": "COSECHADO"
+    },
+    {
+        "id_lote": "L008",
+        "producto_codigo": "P011",
+        "fecha_siembra": "18-09-2026",
+        "area_m2": 88,
+        "cantidad_producida": 90,
+        "estado": "COSECHADO"
+    },
+    {
+        "id_lote": "L009",
+        "producto_codigo": "P012",
+        "fecha_siembra": "22-09-2026",
+        "area_m2": 48,
+        "cantidad_producida": 120,
+        "estado": "COSECHADO"
     }
 ]
