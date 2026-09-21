@@ -62,3 +62,7 @@ Comando para la evidencia del historial:
 ```text
 git log --oneline --graph --decorate --all
 ```
+## Mejora documentada
+
+Se documentaron las pruebas funcionales y los retos de ampliación
+implementados en AgroControl CBA.
